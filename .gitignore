@@ -1,0 +1,5 @@
+main.c
+*.out
+*.o
+*test*.c
+*.exe
