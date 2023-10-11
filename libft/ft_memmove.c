@@ -1,24 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 21:27:48 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/10/10 16:23:22 by yeondcho         ###   ########.fr       */
+/*   Created: 2023/10/06 12:18:56 by yeondcho          #+#    #+#             */
+/*   Updated: 2023/10/10 17:41:14 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char	*ptr;
+	unsigned char		*ptr;
+	const unsigned char	*srcptr;
 
-	ptr = s;
-	while (n-- > 0)
+	ptr = dst;
+	srcptr = src;
+	if (!src && !dst)
+		return (0);
+	if (dst <= src)
 	{
-		*ptr++ = 0;
+		while (len-- > 0)
+		{
+			*ptr++ = *srcptr++;
+		}
 	}
+	else
+	{
+		ptr += len - 1;
+		srcptr += len - 1;
+		while (len-- > 0)
+		{
+			*ptr-- = *srcptr--;
+		}
+	}
+	return (dst);
 }

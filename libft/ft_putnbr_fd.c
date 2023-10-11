@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 21:27:48 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/10/10 16:23:22 by yeondcho         ###   ########.fr       */
+/*   Created: 2023/10/11 15:27:30 by yeondcho          #+#    #+#             */
+/*   Updated: 2023/10/11 17:13:54 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	ft_putnbr_fd(int n, int fd)
 {
-	unsigned char	*ptr;
+	char	result[11];
+	int		i;
 
-	ptr = s;
-	while (n-- > 0)
+	i = 0;
+	if (n < 0)
+		write(fd, "-", 1);
+	if (n == 0)
+		write(fd, "0", 1);
+	while (n != 0)
 	{
-		*ptr++ = 0;
+		if (n < 0)
+			result[i++] = n % 10 * -1 + 48;
+		else
+			result[i++] = n % 10 + 48;
+		n /= 10;
+	}
+	while (i > 0)
+	{
+		write(fd, &result[--i], 1);
 	}
 }

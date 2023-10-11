@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 21:27:48 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/10/10 16:23:22 by yeondcho         ###   ########.fr       */
+/*   Created: 2023/10/11 15:26:12 by yeondcho          #+#    #+#             */
+/*   Updated: 2023/10/11 16:44:28 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	ft_putendl_fd(char *s, int fd)
 {
-	unsigned char	*ptr;
-
-	ptr = s;
-	while (n-- > 0)
+	while (*s)
 	{
-		*ptr++ = 0;
+		write(fd, s, 1);
+		s++;
 	}
+	write(fd, "\n", 1);
 }

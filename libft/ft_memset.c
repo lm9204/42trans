@@ -6,15 +6,15 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:18:08 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/10/05 21:25:02 by yeondcho         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:23:47 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stddef.h>
-#include <stdio.h>
+
+#include "libft.h"
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned char *ptr;
+	unsigned char	*ptr;
 
 	ptr = s;
 	while (n-- > 0)

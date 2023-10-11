@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 21:27:48 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/10/10 16:23:22 by yeondcho         ###   ########.fr       */
+/*   Created: 2023/10/04 19:54:31 by yeondcho          #+#    #+#             */
+/*   Updated: 2023/10/04 20:01:12 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_bzero(void *s, size_t n)
+int	ft_isalnum(int c)
 {
-	unsigned char	*ptr;
-
-	ptr = s;
-	while (n-- > 0)
-	{
-		*ptr++ = 0;
-	}
+	if ((c >= '0' && c <= '9') \
+	|| (c >= 'A' && c <= 'Z') \
+	|| (c >= 'a' && c <= 'z'))
+		return (1);
+	else
+		return (0);
 }

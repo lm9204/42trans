@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 21:27:48 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/10/10 16:23:22 by yeondcho         ###   ########.fr       */
+/*   Created: 2023/10/04 20:17:24 by yeondcho          #+#    #+#             */
+/*   Updated: 2023/10/04 20:23:08 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_bzero(void *s, size_t n)
+int	ft_strlen(char *s)
 {
-	unsigned char	*ptr;
+	int	count;
 
-	ptr = s;
-	while (n-- > 0)
-	{
-		*ptr++ = 0;
-	}
+	count = 0;
+	while (s[count])
+		count++;
+	return (count);
 }
