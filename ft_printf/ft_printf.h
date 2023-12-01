@@ -13,13 +13,12 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # include <stdarg.h>
-# include <string.h>
 # include "libft/libft.h"
 
 int		ft_printf(const char *arg, ...);
 int		read_format(const char *arg, va_list *va_arg);
-int		print_format(char c, va_list *va_arg, int *totallen);
-int		print_normal(const char *arg, int len, int *totallen);
+void	print_format(char c, va_list *va_arg, int *totallen);
+void	print_normal(const char *arg, int len, int *totallen);
 int		pr_num(va_list *args);
 int		pr_uns(va_list *args);
 int		pr_addr(va_list *args, const char *hex);

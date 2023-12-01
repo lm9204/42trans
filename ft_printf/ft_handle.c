@@ -17,7 +17,6 @@ int	pr_num(va_list *args)
 	char	res[12];
 	int		i;
 	int		n;
-	int		write_len;
 	int		flag;
 
 	flag = 0;
@@ -38,10 +37,7 @@ int	pr_num(va_list *args)
 	if (flag)
 		res[i--] = '-';
 	res[11] = 0;
-	write_len = write(1, &res[i + 1], 10 - i);
-	if (write_len == -1)
-		return (-1);
-	return (write_len);
+	return (write(1, &res[i + 1], 10 - i));
 }
 
 int	pr_uns(va_list *args)
@@ -81,7 +77,7 @@ int	pr_hex(va_list *args, const char *hex)
 	char			res[12];
 	unsigned int	n;
 	int				i;
-	
+
 	n = va_arg(*args, unsigned int);
 	i = 10;
 	if (n == 0)

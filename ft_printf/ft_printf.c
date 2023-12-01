@@ -16,10 +16,8 @@ int	ft_printf(const char *arg, ...)
 {
 	va_list	va_args;
 	int		res;
-	int		len;
 
 	va_start(va_args, arg);
-	len = 0;
 	res = read_format(arg, &va_args);
 	if (res == -1)
 		return (-1);
@@ -27,14 +25,14 @@ int	ft_printf(const char *arg, ...)
 	return (res);
 }
 
-int	print_format(char c, va_list *va_arg, int *totallen)
+void	print_format(char c, va_list *va_arg, int *totallen)
 {
 	const char	*hex_lower = "0123456789abcdef";
 	const char	*hex_upper = "0123456789ABCDEF";
 	int			check;
 
 	if (*totallen == -1)
-		return (0);
+		return ;
 	if (c == 'd' || c == 'i')
 		check = pr_num(va_arg);
 	if (c == 'u')
@@ -52,9 +50,8 @@ int	print_format(char c, va_list *va_arg, int *totallen)
 	if (c == '%')
 		check = write(1, "%", 1);
 	if (check == -1)
-		return (0);
+		*totallen = -1;
 	*totallen += check;
-	return (0);
 }
 
 int	read_format(const char *arg, va_list *va_arg)
@@ -71,7 +68,8 @@ int	read_format(const char *arg, va_list *va_arg)
 		if (arg[i] != '%')
 		{
 			count++;
-			continue;
+			i++;
+			continue ;
 		}
 		print_normal(&arg[i - count], count, &totallen);
 		if (arg[i] == '%' && i >= 1)
@@ -84,17 +82,16 @@ int	read_format(const char *arg, va_list *va_arg)
 	return (totallen);
 }
 
-int	print_normal(const char *arg, int len, int *totallen)
+void	print_normal(const char *arg, int len, int *totallen)
 {
 	int		write_len;
 
 	if (*totallen == -1)
-		return (0);
+		return ;
 	write_len = write(1, arg, len);
 	if (write_len == -1)
-		return (-1);
+		*totallen = -1;
 	*totallen += write_len;
-	return (write_len);
 }
 
 int	pr_char(va_list *args)
