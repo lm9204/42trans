@@ -18,12 +18,12 @@
 
 int		ft_printf(const char *arg, ...);
 int		read_format(const char *arg, va_list *va_arg);
-int		print_format(char c, va_list *va_arg);
-int		print_normal(const char *arg, int len);
+int		print_format(char c, va_list *va_arg, int *totallen);
+int		print_normal(const char *arg, int len, int *totallen);
 int		pr_num(va_list *args);
 int		pr_uns(va_list *args);
-int		pr_addr(va_list *args, const char *_hex);
-int		pr_hex(va_list *args, const char *_hex);
+int		pr_addr(va_list *args, const char *hex);
+int		pr_hex(va_list *args, const char *hex);
 int		pr_str(va_list *args);
 int		pr_char(va_list *args);
 
