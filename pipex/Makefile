@@ -7,7 +7,7 @@ HEADER = pipex.h
 all : $(NAME)
 
 $(NAME) : $(SRC) $(HEADER)
-	$(CC) $(FLAGS) $< -o $@
+	$(CC) $(FLAGS) $< -o $@ -Iincludes
 
 fclean :
 	rm -rf $(NAME)
