@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 21:45:47 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/12/16 19:45:28 by yeondcho         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:16:32 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,16 @@ int	ft_isquotes(char c, const char quotes[2])
 char	*ft_cutcmds(const char *cmds, const char quotes[2], int *idx)
 {
 	char	*word;
+	char	isquotes;
 	int		len;
-	int		isquotes;
 
 	len = 0;
 	isquotes = 0;
 	if (ft_isquotes(cmds[len + *idx], quotes))
 	{
+		isquotes = cmds[len + *idx];
 		(*idx)++;
-		isquotes = 1;
-		while (cmds[len + *idx] && !ft_isquotes(cmds[len + *idx], quotes))
+		while (cmds[len + *idx] && cmds[len + *idx] != isquotes)
 			len++;
 	}
 	else
@@ -127,29 +127,35 @@ char	*ft_cutcmds(const char *cmds, const char quotes[2], int *idx)
 
 int	count_cmds(char *cmds, const char quotes[])
 {
+	char		isquotes;
 	int			count;
-	int			isquotes;
 	int			isword;
+	int			i;
 
+	i = 0;
 	count = 0;
 	isword = 0;
 	isquotes = 0;
-	while (*cmds)
+	while (cmds[i])
 	{
-		if (isquotes && (*cmds == quotes[0] || *cmds == quotes[1]))
-			isquotes = 0;
-		else if (!isquotes && (*cmds == quotes[0] || *cmds == quotes[1]))
-			isquotes = 1;
-		if (isquotes && cmds++)
-			continue ;
-		if (!isword && *cmds != ' ')
+		if (!isquotes && ft_isquotes(cmds[i], quotes))
 		{
+			isquotes = cmds[i];
 			count++;
-			isword = 1;
 		}
-		if (isword && (*cmds == ' '))
-			isword = 0;
-		cmds++;
+		else if (isquotes && cmds[i] == isquotes)
+			isquotes = 0;
+		else if (isquotes == 0)
+		{
+			if (!isword && cmds[i] != ' ')
+			{
+				count++;
+				isword = 1;
+			}
+			if (isword && (cmds[i] == ' '))
+				isword = 0;
+		}
+		i++;
 	}
 	return (count);
 }
