@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 16:16:01 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/12/16 19:28:43 by yeondcho         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:36:14 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ char	*pathfinder(char **envp, char *cmd);
 char	**split_path(char **envp);
 char	**split_cmds(char *cmds);
 int		count_cmds(char *cmds, const char quotes[]);
-char	*ft_cutcmds(const char *cmds, const char quotes[2], int *idx);
+char	*ft_cutcmds(const char *cmds, const char quotes[], int *idx);
 #endif

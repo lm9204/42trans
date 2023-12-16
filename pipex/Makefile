@@ -1,6 +1,6 @@
 CC = cc
 HEADER = pipex.h
-FLAGS = -Wall -Wextra -Werror -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g
 SRCS = pipex.c pipex_utils.c
 LIB_DIR = libft
 LIB_HEADER = libft.h

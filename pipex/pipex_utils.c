@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 21:45:47 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/12/16 21:16:32 by yeondcho         ###   ########.fr       */
+/*   Updated: 2023/12/16 22:04:47 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**split_path(char **envp)
 
 char	**split_cmds(char *cmds)
 {
-	const char	quotes[2] = {'"', '\''};
+	const char	quotes[3] = {'"', '\'', '\"'};
 	char		**res;
 	int			size;
 	int			idx;
@@ -82,12 +82,12 @@ char	**split_cmds(char *cmds)
 	return (res);
 }
 
-int	ft_isquotes(char c, const char quotes[2])
+int	ft_isquotes(char c, const char quotes[])
 {
 	int	i;
 
 	i = 0;
-	while (i < 2)
+	while (i < 3)
 	{
 		if (c == quotes[i])
 			return (1);
@@ -96,7 +96,7 @@ int	ft_isquotes(char c, const char quotes[2])
 	return (0);
 }
 
-char	*ft_cutcmds(const char *cmds, const char quotes[2], int *idx)
+char	*ft_cutcmds(const char *cmds, const char quotes[], int *idx)
 {
 	char	*word;
 	char	isquotes;
