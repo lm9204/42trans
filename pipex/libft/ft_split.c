@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_str.c                                        :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 21:46:04 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/12/07 21:50:04 by yeondcho         ###   ########.fr       */
+/*   Created: 2023/10/10 20:37:25 by yeondcho          #+#    #+#             */
+/*   Updated: 2023/12/18 05:51:45 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	**ft_split(const char *s, char c)
+#include "libft.h"	
+
+static int		ft_countwords(char const *s, char c);
+static char		*ft_cutword(char const *s, char c, int *search_idx);
+
+char	**ft_split(char const *s, char c)
 {
 	char	**result;
 	int		i;
@@ -39,7 +44,7 @@ char	**ft_split(const char *s, char c)
 	return (result);
 }
 
-char	*ft_cutword(const char *s, char c, int *search_idx)
+static char	*ft_cutword(char const *s, char c, int *search_idx)
 {
 	char	*word;
 	int		wordlen;
@@ -56,7 +61,7 @@ char	*ft_cutword(const char *s, char c, int *search_idx)
 	return (word);
 }
 
-char	*ft_allocword(const char *s, int size)
+char	*ft_allocword(char const *s, int size)
 {
 	char	*word;
 	int		i;
@@ -73,7 +78,7 @@ char	*ft_allocword(const char *s, int size)
 	return (word);
 }
 
-int	ft_countwords(const char *s, char c)
+static int	ft_countwords(char const *s, char c)
 {
 	int	isword;
 	int	count;
@@ -92,14 +97,4 @@ int	ft_countwords(const char *s, char c)
 		s++;
 	}
 	return (count);
-}
-
-int	ft_strlen(const char *s)
-{
-	int	len;
-
-	len = 0;
-	while (*s++)
-		len++;
-	return (len);
 }
