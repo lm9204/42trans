@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 16:16:11 by yeondcho          #+#    #+#             */
-/*   Updated: 2023/12/16 19:58:30 by yeondcho         ###   ########.fr       */
+/*   Updated: 2023/12/18 06:28:42 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void	pipex(t_data *data, char **envp)
 		data->pid = fork();
 		if (data->pid == 0)
 			execute_child(data, i, envp);
-		//dup2(data->p_fd[0], STDIN_FILENO);
+		dup2(data->p_fd[0], STDIN_FILENO);
+		close(data->p_fd[0]);
+		close(data->p_fd[1]);
 		i++;
 	}
 	close(data->p_fd[0]);
@@ -111,28 +113,25 @@ void	execute_child(t_data *data, int cmdorder, char **envp)
 	char	**arg;
 	int		fd;
 
-	dup2(data->p_fd[1], STDOUT_FILENO);
-	dup2(data->p_fd[0], STDIN_FILENO);
 	if (cmdorder == 0)
 	{
 		fd = open(data->io[0], O_RDONLY);
 		if (fd == -1)
 			exit_with_err(0);
 		dup2(fd, STDIN_FILENO);
-		close(data->p_fd[0]);
-		close(data->p_fd[1]);
 		close(fd);
 	}
-	if (cmdorder == data->size - 1)
+	else if (cmdorder == data->size - 1)
 	{
 		fd = open(data->io[1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 		if (fd == -1)
 			exit_with_err(0);
 		dup2(fd, STDOUT_FILENO);
-		close(data->p_fd[0]);
-		close(data->p_fd[1]);
 		close(fd);
 	}
+	dup2(data->p_fd[1], STDOUT_FILENO);
+	close(data->p_fd[0]);
+	close(data->p_fd[1]);
 	arg = split_cmds(data->cmds[cmdorder]);
 	path = pathfinder(data->envp, arg[0]);
 	if (path == NULL)
