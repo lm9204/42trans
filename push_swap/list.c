@@ -77,5 +77,5 @@ int	push_node(t_list **from, t_list **to, t_list *target)
 
 int	switch_node(t_list **list, int from, int to)
 {
-
+	
 }

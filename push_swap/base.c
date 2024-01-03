@@ -11,3 +11,13 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	convert_4(t_list **list)
+{
+	
+}
+
+void	convert_10(t_list **list)
+{
+
+}
