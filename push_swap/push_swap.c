@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 19:22:16 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/03 20:03:00 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/05 19:31:01 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,41 @@ int	main(int argc, char **argv)
 {
 	t_stack	a;
 	t_stack	b;
-	int		size;
 
-	if (argc != 2)
-		err_handler();
-	size = get_stack_size(argv[1]);
-	init_stack(&a, size);
-	init_stack(&b, size);
-	if (!insert_stack(&a, argv[1]))
-		err_handler();
-	
+	init_list(&a, argv + 1, argc - 1);
+	init_list(&b, NULL, 0);
+	print_list(&a);
+	print_list(&b);
 }
 
-void	init_stack(t_stack *stack, int size)
+void	init_list(t_element **list, char **arg, int size)
 {
-	stack->stack = (int *)malloc(sizeof(int) * size);
-	stack->top = -1;
-	stack->size = size;
+	char		**tmp;
+	int			idx;
+	int			i;
+	int			n;
+
+	i = 0;
+	idx = 0;
+	while (i < size && arg[i])
+	{
+		tmp = ft_split(arg[i], ' ');
+		if (tmp == NULL)
+			*tmp = arg[i];
+		while (*tmp)
+		{
+			printf("%s\n", *tmp);
+			if (!check_num(*tmp))
+				err_handler();
+			n = ft_atoi(*tmp);
+			if (!addlist(list, create_node(n, idx)))
+				err_handler();
+			idx++;
+			tmp++;
+		}
+		i++;
+	}
+	convert_4(list);
 }
 
 int	get_stack_size(char *stack)
@@ -51,25 +69,6 @@ int	get_stack_size(char *stack)
 	return (count);
 }
 
-int	insert_stack(t_stack *stack, char *stack_str)
-{
-	char	**data;
-	int		i;
-
-	data = ft_split(stack_str, ' ');
-	if (data == NULL)
-		return (-1);
-	i = stack->size - 1;
-	while (i > 0)
-	{
-		if (!check_num(data[stack->size - i - 1]))
-			err_handler();
-		stack->stack[i] = ft_atoi(data[stack->size - i - 1]);
-		i--;
-	}
-	return (1);
-}
-
 int	check_num(char *str)
 {
 	int	i;
@@ -77,8 +76,8 @@ int	check_num(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!('0' <= str[i] && str[i] <= '9'))
-			return (0);
+		if (!ft_isdigit(str[i]))
+			err_handler();
 		i++;
 	}
 	return (1);
@@ -90,14 +89,26 @@ void	err_handler(void)
 	exit(1);
 }
 
-void	test_print(t_stack *s)
+void	print_list(t_element **list)
 {
-	int	i;
+	t_element			*ptr;
+	int					i;
+	unsigned long long	j;
 
 	i = 0;
-	while (i < s->size)
+	ptr = *list;
+	if (!ptr)
+		printf("no node on list\n");
+	while (ptr)
 	{
-		printf("%d번째 : %d\n", i, s->stack[s->top - i]);
+		j = 1;
+		printf("%d번째 : %d %lld | idx : %d\n", i, ptr->val, ptr->base_4, ptr->idx);
+		while (j <= ptr->base_4)
+		{
+			printf("%lld자릿수 : %llu\n", j, (ptr->base_4 / j) % 10);
+			j *= 10;
+		}
+		ptr = ptr->next;
 		i++;
 	}
 }

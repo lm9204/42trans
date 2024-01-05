@@ -1,6 +1,6 @@
 CC = cc
 FLAGS = -Wall -Wextra -Werror -MMD -MP -g -fsanitize=address
-SRCS = push_swap.c push_swap_fnc.c base.c list.c
+SRCS = push_swap.c push_swap_fnc.c base.c list.c radix.c
 CHECKER_SRCS = checker.c push_swap_fnc.c checker_utils.c
 # SRCS_BONUS = 
 LIB_DIR = libft

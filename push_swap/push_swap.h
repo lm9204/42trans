@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 19:22:33 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/03 20:29:12 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/05 19:16:46 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,44 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "libft/libft.h"
-# include "stack.h"
 
-typedef struct s_list
+# include <stdio.h>
+
+typedef struct s_element
 {
-	long long		base_4;
-	int				val;
-	struct s_list	*next;
-}	t_list;
+	int	val;
+}	t_element;
+
+typedef struct s_stack
+{
+	t_element	*stack;
+	int			top;
+	int			size;
+}	t_stack;
 
 /* ---------------push_swap.c---------------*/
-void	init_stack(t_stack *stack, int size);
-int		get_stack_size(char *stack);
-int		insert_stack(t_stack *stack, char *argv);
+void		init_list(t_element **list, char **arg, int size);
+int			get_stack_size(char *stack);
+int			insert_stack(t_stack *stack, char *argv);
 
 /* -------------push_swap_fnc.c-------------*/
-void	s(t_stack *stack);
-void	p(t_stack *from, t_stack *to);
-void	r(t_stack *stack);
-void	rr(t_stack *stack);
+void		s(t_stack *stack);
+void		p(t_stack *from, t_stack *to);
+void		r(t_stack *stack);
+void		rr(t_stack *stack);
 
-void	err_handler(void);
-int		check_num(char *str);
+void		err_handler(void);
+int			check_num(char *str);
 /* ------------------base.c-----------------*/
-void	convert_4(t_list **list);
-void	convert_10(t_list **list);
+long long	base_4(int val);
+void		convert_4(t_element **list);
 /* ------------------list.c-----------------*/
-t_list	*create_node(int val);
-void	addlist(t_list **head, t_list *new);
-void	delnode(t_list **head, int val);
-int		push_node(t_list **from, t_list **to, t_list *target);
-int		switch_node(t_list **list, int from, int to);
+t_element	*create_node(int val, int idx);
+void		dellist(t_element **head, int val);
+int			addlist(t_element **head, t_element *new);
+int			push_node(t_element **from, t_element **to, t_element *target);
+int			switch_node(t_element **list, int from, int to);
 
-void	test_print(t_stack *s);
+void		print_list(t_element **list);
 
 #endif
