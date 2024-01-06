@@ -6,59 +6,58 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 10:46:08 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/03 19:40:45 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/06 16:51:44 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 void	s(t_stack *s)
 {
-	int	tmp;
+	t_element	*tmp;
 
-	tmp = s->stack[s->top];
-	s->stack[s->top] = s->stack[s->top - 1];
-	s->stack[s->top - 1] = tmp;
+	tmp = s->list[s->top];
+	s->list[s->top] = s->list[s->top - 1];
+	s->list[s->top - 1] = tmp;
 }
 
 void	p(t_stack *from, t_stack *to)
 {
-	int	tmp;
+	t_element	*tmp;
 
-	tmp = from->stack[from->top];
-	from->stack[from->top] = 0;
+	tmp = from->list[from->top];
+	reset_node(from->list[from->top]);
 	from->top--;
 	to->top++;
-	to->stack[to->top] = tmp;
+	to->list[to->top] = tmp;
 }
 
 void	r(t_stack *s)
 {
-	int	tmp;
-	int	i;
+	t_element	*tmp;
+	int			i;
 
-	tmp = s->stack[s->top];
+	tmp = s->list[s->top];
 	i = s->top;
 	while (i > 0)
 	{
-		s->stack[i] = s->stack[i - 1];
+		s->list[i] = s->list[i - 1];
 		i--;
 	}
-	s->stack[0] = tmp;
+	s->list[0] = tmp;
 }
 
 void	rr(t_stack *s)
 {
-	int	tmp;
-	int	i;
+	t_element	*tmp;
+	int			i;
 
-	tmp = s->stack[0];
+	tmp = s->list[0];
 	i = 0;
 	while (i < s->top)
 	{
-		s->stack[i] = s->stack[i + 1];
+		s->list[i] = s->list[i + 1];
 		i++;
 	}
-	s->stack[s->top] = tmp;
+	s->list[s->top] = tmp;
 }

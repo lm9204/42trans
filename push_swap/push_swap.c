@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 19:22:16 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/05 19:31:01 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/06 18:01:41 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 	print_list(&b);
 }
 
-void	init_list(t_element **list, char **arg, int size)
+void	init_list(t_stack *s, char **arg, int size)
 {
 	char		**tmp;
 	int			idx;
@@ -34,6 +34,10 @@ void	init_list(t_element **list, char **arg, int size)
 
 	i = 0;
 	idx = 0;
+	s->list = malloc(sizeof(t_element) * (get_stack_size(arg) + 1));
+	if (s->list == NULL)
+		err_handler();
+	s->size = get_stack_size(arg);
 	while (i < size && arg[i])
 	{
 		tmp = ft_split(arg[i], ' ');
@@ -45,26 +49,29 @@ void	init_list(t_element **list, char **arg, int size)
 			if (!check_num(*tmp))
 				err_handler();
 			n = ft_atoi(*tmp);
-			if (!addlist(list, create_node(n, idx)))
-				err_handler();
 			idx++;
 			tmp++;
 		}
 		i++;
 	}
-	convert_4(list);
 }
 
-int	get_stack_size(char *stack)
+int	get_stack_size(char **arg)
 {
 	int	count;
+	int	i;
 
 	count = 0;
-	while (*stack)
+	while (*arg)
 	{
-		if (*stack == ' ')
-			count++;
-		stack++;
+		i = 0;
+		while (*arg[i])
+		{
+			if (*arg[i] != ' ')
+				count++;
+			i++;
+		}
+		arg++;
 	}
 	return (count);
 }

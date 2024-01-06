@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:53:59 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/05 17:41:28 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/06 18:41:11 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	sort_digit(t_element **a, t_element **b, long long digit)
 int	get_digit(t_element *node, int digit)
 {
 	int	digit_n;
-	
+
 	digit_n = (node->base_4 / digit) % 10;
 	return (digit_n);
 }
