@@ -6,55 +6,83 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 10:51:30 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/06 13:17:20 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:32:10 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	convert_4(t_element **list)
+char	*base_3(int val)
 {
-	t_element		*ptr;
-
-	ptr = *list;
-	while (ptr)
-	{
-		ptr->base_4 = base_4(ptr->idx);
-		ptr = ptr->next;
-	}
-}
-
-long long	power(int n, int power)
-{
-	long long	res;
-	int			i;
+	char	*res;
+	char	tmp[21];
+	int		i;
+	int		size;
 
 	i = 0;
-	res = n;
-	if (power < 0)
-		return (1);
-	while (i < power)
+	if (val == 0)
+		tmp[i++] = '0';
+	while (val != 0)
 	{
-		res *= 10;
+		tmp[i] = val % 3 + '0';
+		val /= 3;
+		i++;
+	}
+	tmp[i] = 0;
+	res = malloc(sizeof(char) * (i + 1));
+	if (res == NULL)
+		return (NULL);
+	res[i--] = 0;
+	size = i;
+	i = 0;
+	while (i <= size)
+	{
+		res[i] = tmp[size - i];
 		i++;
 	}
 	return (res);
 }
 
-long long	base_4(int val)
+int	convert_base(char *s, int digit)
 {
-	long long	n;
-	int			i;
+	int	res;
+	int	n;
+	int	i;
 
-	if (val == 0)
-		return (0);
 	i = 0;
 	n = 0;
-	while (val != 0)
+	while (i < 2)
 	{
-		n += (val % 4) * power(10, i - 1);
-		val /= 4;
+		if (i != 0)
+			n += get_digit(s, digit + i) * i * 10;
+		else
+			n += get_digit(s, digit + i);
 		i++;
+	}
+	i = 0;
+	res = 0;
+	if (n == 0)
+		return (0);
+	while (n != 0)
+	{
+		res += (n % 10) * power(3, i);
+		n /= 10;
+		i++;
+	}
+	return (res);
+}
+
+long long	power(int x, int y)
+{
+	long long	n;
+
+	if (y == 0)
+		return (1);
+	n = 1;
+	while (y > 0)
+	{
+		n *= x;
+		y--;
 	}
 	return (n);
 }

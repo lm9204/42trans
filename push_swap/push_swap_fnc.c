@@ -6,33 +6,39 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 10:46:08 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/06 16:51:44 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:59:58 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	s(t_stack *s)
+void	s(t_stack *s, int isprint)
 {
 	t_element	*tmp;
 
 	tmp = s->list[s->top];
 	s->list[s->top] = s->list[s->top - 1];
 	s->list[s->top - 1] = tmp;
+	if (isprint)
+		print_cmd(s->name, "s");
+	return ;
 }
 
-void	p(t_stack *from, t_stack *to)
+void	p(t_stack *from, t_stack *to, int isprint)
 {
 	t_element	*tmp;
 
 	tmp = from->list[from->top];
-	reset_node(from->list[from->top]);
+	from->list[from->top] = 0;
 	from->top--;
 	to->top++;
 	to->list[to->top] = tmp;
+	if (isprint)
+		print_cmd(to->name, "p");
+	return ;
 }
 
-void	r(t_stack *s)
+void	r(t_stack *s, int isprint)
 {
 	t_element	*tmp;
 	int			i;
@@ -44,10 +50,13 @@ void	r(t_stack *s)
 		s->list[i] = s->list[i - 1];
 		i--;
 	}
-	s->list[0] = tmp;
+	s->list[i] = tmp;
+	if (isprint)
+		print_cmd(s->name, "r");
+	return ;
 }
 
-void	rr(t_stack *s)
+void	rr(t_stack *s, int isprint)
 {
 	t_element	*tmp;
 	int			i;
@@ -59,5 +68,19 @@ void	rr(t_stack *s)
 		s->list[i] = s->list[i + 1];
 		i++;
 	}
-	s->list[s->top] = tmp;
+	s->list[i] = tmp;
+	if (isprint)
+		print_cmd(s->name, "rr");
+	return ;
 }
+
+void	print_cmd(char name, char *cmd_name)
+{
+	write(1, cmd_name, ft_strlen(cmd_name));
+	if (name == 'o')
+		write(1, "a", 1);
+	else
+		write(1, &name, 1);
+	write(1, "\n", 1);
+}
+

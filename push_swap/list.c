@@ -6,73 +6,56 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 20:13:07 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/06 17:47:37 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:59:49 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_element	*create_node(int val, int idx)
+t_element	*create_node(int val)
 {
 	t_element	*node;
 
 	node = malloc(sizeof(t_element));
 	if (node == NULL)
 		return (NULL);
-	node->base_4 = base_4(val);
-	node->idx = idx;
+	node->base_3 = NULL;
+	node->idx = -1;
 	node->val = val;
 	return (node);
 }
 
-void	reset_node(t_element *node)
+t_stack	*copy_list(t_stack *a)
 {
-	node->base_4 = -1;
-	node->idx = -1;
-	node->val = -1;
+	t_stack	*ptr;
+	int		i;
+
+	ptr = malloc(sizeof(t_stack));
+	if (ptr == NULL)
+		return (NULL);
+	ptr->name = 'o';
+	ptr->size = a->size;
+	ptr->top = a->top;
+	ptr->list = malloc(sizeof(t_element *) * (a->size + 1));
+	if (ptr->list == NULL)
+		return (NULL);
+	i = a->top;
+	while (i >= 0)
+	{
+		ptr->list[i] = malloc(sizeof(t_element));
+		if (ptr->list[i] == NULL)
+			return (NULL);
+		ptr->list[i]->val = a->list[i]->val;
+		ptr->list[i]->base_3 = ft_strdup(a->list[i]->base_3);
+		ptr->list[i]->idx = a->list[i]->idx;
+		i--;
+	}
+	return (ptr);
 }
 
-// int	push_node(t_element **from, t_element **to, t_element *target)
-// {
-// 	t_element	*pf;
-// 	t_element	*pt;
-
-// 	pf = *from;
-// 	pt = *to;
-// 	while (pf)
-// 	{
-// 		if (pf->base_4 == target->base_4)
-// 		{
-// 			addlist(to, target);
-// 			dellist(from, target->idx);
-// 			return (1);
-// 		}
-// 		pf = pf->next;
-// 	}
-// 	return (0);
-// }
-
-// int	switch_node(t_element **list, int from, int to)
-// {
-// 	t_element	*tmp;
-// 	t_element	*tmp2;
-// 	t_element	*ptr;
-
-// 	ptr = *list;
-// 	while (ptr && !tmp && !tmp2)
-// 	{
-// 		if (ptr->val == from)
-// 			tmp = ptr;
-// 		else if (ptr->val == to)
-// 			tmp2 = ptr;
-// 		ptr = ptr->next;
-// 	}
-// 	if (tmp && tmp2)
-// 	{
-// 		ptr = tmp;
-// 		tmp = tmp2;
-// 		tmp2 = ptr;
-// 		return (1);
-// 	}
-// 	return (0);
-// }
+void	reset_node(t_element *node)
+{
+	node->idx = -1;
+	node->base_3 = 0;
+	node->val = 0;
+}
