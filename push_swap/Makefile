@@ -1,31 +1,24 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror -MMD -MP -g -fsanitize=address
-SRCS = push_swap.c push_swap_fnc.c base.c list.c radix.c
-CHECKER_SRCS = checker.c push_swap_fnc.c checker_utils.c
-# SRCS_BONUS = 
+FLAGS = -Wall -Wextra -Werror -MMD -MP -g 
+SRCS = push_swap.c push_swap_fnc.c base.c list.c radix.c radix_utils.c \
+		push_swap_utils.c radix_low.c
+CHECKER_SRCS = checker.c checker_fnc.c checker_utils.c checker_validate.c
 LIB_DIR = libft
 LIB_HEADER = libft.h
 LIB = libft.a
 OBJS = $(SRCS:.c=.o)
 OBJS_CHECKER = $(CHECKER_SRCS:.c=.o)
-# OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 NAME = push_swap
-CHECKER = checker
-# BONUS = .bonus
+BONUS = checker
 
 all : $(NAME)
-# bonus : $(BONUS)
-checker : $(CHECKER)
+bonus : $(BONUS)
 
 $(NAME) : $(OBJS) $(LIB_DIR)/$(LIB)
 	$(CC) $(FLAGS) $^ -o $(NAME)
 
-$(CHECKER) : $(OBJS_CHECKER) $(LIB_DIR)/$(LIB)
-	$(CC) $(FLAGS) $^ -o $(CHECKER)
-
-# $(BONUS) : $(OBJS_BONUS) $(LIB_DIR)/$(LIB)
-# 	$(CC) $(FLAGS) $^ -o $@
-# 	cp $@ $(NAME)
+$(BONUS) : $(OBJS_CHECKER) $(LIB_DIR)/$(LIB)
+	$(CC) $(FLAGS) $^ -o $(BONUS)
 
 %.o : %.c
 	$(CC) $(FLAGS) -c $< -o $@ -Iincludes
@@ -41,11 +34,11 @@ clean : $(LIB_DIR)
 	rm -rf $(OBJS_CHECKER)
 	rm -rf $(SRCS:.c=.d)
 	rm -rf $(CHECKER_SRCS:.c=.d)
-	rm -rf $(BONUS)
 
 fclean : clean
 	rm -rf $(NAME)
+	rm -rf $(BONUS)
 
 re : fclean all
 
-.PHONY: all checker bonus clean re fclean $(LIB_DIR)
+.PHONY: all bonus clean re fclean $(LIB_DIR)

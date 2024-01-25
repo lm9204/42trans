@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 10:51:30 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/17 22:32:10 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:24:46 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,23 @@ char	*base_3(int val)
 	int		i;
 	int		size;
 
-	i = 0;
+	size = 0;
 	if (val == 0)
-		tmp[i++] = '0';
+		tmp[size++] = '0';
 	while (val != 0)
 	{
-		tmp[i] = val % 3 + '0';
+		tmp[size] = val % 3 + '0';
 		val /= 3;
-		i++;
+		size++;
 	}
-	tmp[i] = 0;
-	res = malloc(sizeof(char) * (i + 1));
+	res = malloc(sizeof(char) * (size + 1));
 	if (res == NULL)
 		return (NULL);
-	res[i--] = 0;
-	size = i;
+	res[size] = 0;
 	i = 0;
-	while (i <= size)
+	while (i < size)
 	{
-		res[i] = tmp[size - i];
+		res[i] = tmp[size - i - 1];
 		i++;
 	}
 	return (res);

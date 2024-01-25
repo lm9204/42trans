@@ -6,13 +6,11 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 19:22:16 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/17 22:35:01 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:57:10 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-#include <stdio.h>
 
 int	main(int argc, char **argv)
 {
@@ -28,8 +26,11 @@ int	main(int argc, char **argv)
 	init_idx(&a);
 	org = copy_list(&a);
 	sort_list(&a, &b);
+	if (a.size <= 5)
+		exit(0);
 	replace_origin(&a, org);
 	sort_list(org, &b);
+	exit(0);
 }
 
 void	init_list(t_stack *s, char **arg, int size, char name)
@@ -41,7 +42,9 @@ void	init_list(t_stack *s, char **arg, int size, char name)
 	idx = size - 1;
 	s->top = -1;
 	s->name = name;
-	s->list = malloc(sizeof(t_element *) * (size + 1));
+	if (size == 0)
+		err_handler();
+	s->list = malloc(sizeof(t_element *) * (size));
 	if (s->list == NULL)
 		err_handler();
 	s->size = size;
@@ -49,60 +52,54 @@ void	init_list(t_stack *s, char **arg, int size, char name)
 	while (i < s->size && arg && arg[i])
 	{
 		tmp = ft_split(arg[i], ' ');
-		if (tmp == NULL)
-			*tmp = arg[i];
-		while (*tmp)
-		{
-			if (!check_num(*tmp) || !check_dup(s, *tmp, idx))
-				err_handler();
-			s->list[idx] = create_node(ft_atoi(*tmp));
-			s->top++;
-			idx--;
-			tmp++;
-		}
+		if (tmp == NULL || tmp[0] == 0)
+			err_handler();
+		split_cmds(s, tmp, &idx);
+		free_str(tmp);
 		i++;
 	}
 }
-//copy_list 사용 
+
+void	split_cmds(t_stack *stack, char **arg, int *idx)
+{
+	int	i;
+
+	i = 0;
+	while (arg != NULL && arg[i])
+	{
+		if (!check_num(arg[i]) || !check_dup(stack, arg[i], *idx))
+			err_handler();
+		stack->list[(*idx)--] = create_node(ft_atoi(arg[i]));
+		stack->top++;
+		i++;
+	}
+}
+
 void	init_idx(t_stack *s)
 {
 	t_element	**list;
-	t_element	*tmp;
 	int			i;
 	int			j;
 
 	list = malloc(sizeof(t_element *) * s->size);
 	if (list == NULL)
 		return ;
-	i = 0;
-	while (i < s->size)
-	{
+	i = -1;
+	while (++i < s->size)
 		list[i] = s->list[i];
-		i++;
-	}
-	i = 0;
-	while (i < s->size - 1)
+	while (--i >= 0)
 	{
 		j = 0;
-		while (j < s->size - i - 1)
+		while (j < s->size)
 		{
-			if (list[j]->val > list[j + 1]->val)
-			{
-				tmp = list[j];
-				list[j] = list[j + 1];
-				list[j + 1] = tmp;
-			}
+			if (list[i]->val <= list[j]->val)
+				list[j]->idx++;
 			j++;
 		}
-		i++;
 	}
-	i = 0;
-	while (i < s->size)
-	{
-		list[i]->idx = i;
-		list[i]->base_3 = base_3(i);
-		i++;
-	}
+	while (++i < s->size)
+		list[i]->base_3 = base_3(list[i]->idx);
+	free(list);
 }
 
 int	get_stack_size(char **arg)
@@ -112,14 +109,15 @@ int	get_stack_size(char **arg)
 	int	i;
 	int	j;
 
-	i = 0;
-	isword = 0;
+	i = -1;
 	count = 0;
-	while (arg[i])
+	while (arg[++i])
 	{
-		j = 0;
+		j = -1;
 		isword = 0;
-		while (arg[i][j])
+		if (ft_strlen(arg[i]) == 0)
+			err_handler();
+		while (arg[i][++j])
 		{
 			if (!isword && arg[i][j] != ' ')
 			{
@@ -128,70 +126,7 @@ int	get_stack_size(char **arg)
 			}
 			if (isword && arg[i][j] == ' ')
 				isword = 0;
-			j++;
 		}
-		i++;
 	}
 	return (count);
-}
-
-int	check_dup(t_stack *s, char *num, int idx)
-{
-	int	i;
-	int	n;
-
-	if (idx < 0)
-		return (1);
-	i = s->top;
-	n = ft_atoi(num);
-	while (i >= 0)
-	{
-		if (s->list[idx + 1]->val == n)
-			return (0);
-		i--;
-		idx++;
-	}
-	return (1);
-}
-
-int	check_num(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '-' && str[i] != '+' && !ft_isdigit(str[i]))
-			err_handler();
-		i++;
-	}
-	return (1);
-}
-
-void	err_handler(void)
-{
-	write(2, "Error\n", 6);
-	exit(1);
-}
-
-void	print_list(t_stack *s)
-{
-	int	i;
-
-	i = s->top;
-	printf("------------------------------------------------------------\n");
-	printf("stack name : %c\n", s->name);
-	printf("stack size : %d\n", s->size);
-	printf("stack top idx : %d\n",s->top);
-	printf("------------------------------------------------------------\n");
-	printf("print from top stack\n");
-	if (i < 0)
-		printf("nothing in stack\n");
-	while (i >= 0)
-	{
-		// if (i % 4 == 3)
-			// printf("---------------------------------------------------------------\n");
-		printf("idx:%3d |  init_idx:%3d val:%10d base_3:%20s\n", i, s->list[i]->idx, s->list[i]->val, s->list[i]->base_3);
-		i--;
-	}
 }

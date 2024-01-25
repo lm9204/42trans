@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:53:59 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/17 22:35:09 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:11:43 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,138 +20,112 @@ void	sort_list(t_stack *a, t_stack *b)
 	int		digit;
 	int		max_digit;
 	int		i;
-	int		flag;
 
 	digit = 1;
-	flag = 0;
 	max_digit = get_max_digit(a);
+	if (max_digit % 2 == 1)
+		max_digit++;
+	if (a->size <= 5)
+		sort_except(a, b);
 	i = 0;
-	while (max_digit > 0)
+	while (max_digit-- > 0 && a->size > 5)
 	{
-		if (3 * power(3, i) < a->size && a->size <= 4 * power(3, i))
+		if (3 * power(3, i) < a->size && a->size <= 4 * power(3, i) \
+		&& i % 2 != 0)
 		{
 			sort_base_4(a, b, digit);
-			return ;
+			break ;
 		}
 		else
-			sort_digit(a, b, digit);
+			sort_digit(a, b, digit++);
 		swap_stack(&a, &b);
 		i++;
-		max_digit--;
-		digit++;
 	}
 }
 
 void	sort_base_4(t_stack *a, t_stack *b, int digit)
 {
 	int		target;
-	int		isprint;
 	int		i;
-	int		j;
 	int		n;
 
 	target = 0;
-	isprint = 0;
-	if (a->name == 'o' || b->name == 'o')
-		isprint = 1;
-	j = 0;
-	while (j < 2)
+	while (target < 4)
 	{
 		i = 0;
 		while (i < a->size && a->top != -1)
 		{
 			n = convert_base(a->list[a->top]->base_3, digit);
-			if (n == target)
-				p(a, b, isprint);
-			else if (n == target + 1)
-			{
-				p(a, b, isprint);
-				r(b, isprint);
-			}
-			else
-				r(a, isprint);
+			target_push(a, b, target, n);
 			i++;
 		}
-		target = 2;
-		j++;
+		target += 2;
 	}
 }
 
 void	sort_digit(t_stack *a, t_stack *b, int digit)
 {
-	int		n;
-	int		i;
-	int		isprint;
+	int	isprint;
+	int	n;
+	int	i;
 
+	i = 0;
 	isprint = 0;
 	if (a->name == 'o' || b->name == 'o')
 		isprint = 1;
-	i = 0;
-	while (i < a->size && a->top != -1)
+	while (i < a->size)
 	{
 		n = get_digit(a->list[a->top]->base_3, digit);
-		if (n == 0)
-			p(a, b, isprint);
-		else if (n == 1)
-		{
-			p(a, b, isprint);
-			r(b, isprint);
-		}
-		else
-			r(a, isprint);
+		target_push(a, b, 0, n);
 		i++;
 	}
 	while (a->top != -1)
 		p(a, b, isprint);
 }
 
-void	swap_stack(t_stack **a, t_stack **b)
-{
-	t_stack	*tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
-
-void	replace_origin(t_stack *a, t_stack *o)
-{
-	char	*tmp;
-	int		idx;
-
-	idx = o->top;
-	while (idx >= 0)
-	{
-		tmp = ft_strdup(a->list[o->top - o->list[idx]->idx]->base_3);
-		o->list[idx]->base_3 = tmp;
-		idx--;
-	}
-}
-
-int	get_max_digit(t_stack *a)
+void	sort_except(t_stack *a, t_stack *b)
 {
 	int	i;
-	int	max;
+	int	min;
 
-	i = a->top;
-	max = 0;
-	while (i >= 0)
+	if (a->top == 1)
+		sort_2(a);
+	else if (a->top == 2)
+		sort_3(a);
+	else
 	{
-		if (a->list[i]->idx > max)
-			max = a->list[i]->idx;
-		i--;
+		i = a->top;
+		min = get_min(a);
+		if (issorted(a))
+			return ;
+		while (i >= 0 && a->list[a->top]->idx != min)
+		{
+			if (get_depth(a, min) == 1)
+				rr(a, 1);
+			else if (get_depth (a, min) == 0)
+				r(a, 1);
+			i++;
+		}
+		p(a, b, 1);
+		sort_except(a, b);
+		p(b, a, 1);
 	}
-	return (ft_strlen(base_3(max)));
 }
 
-int	get_digit(char *base, int digit)
+void	target_push(t_stack *a, t_stack *b, int target, int n)
 {
-	int	digit_n;
-	int	length;
+	int	isprint;
 
-	length = ft_strlen(base);
-	digit_n = length - digit;
-	if (digit_n < 0)
-		return (0);
-	return (base[digit_n] - 48);
+	isprint = 0;
+	if (a->name == 'o' || b->name == 'o')
+		isprint = 1;
+	if (n == target)
+		p(a, b, isprint);
+	else if (n == target + 1)
+	{
+		p(a, b, isprint);
+		r(b, isprint);
+	}
+	else
+		r(a, isprint);
 }

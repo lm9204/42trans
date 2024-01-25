@@ -6,7 +6,7 @@
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 20:13:07 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/17 18:59:49 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:22:59 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,20 @@ t_stack	*copy_list(t_stack *a)
 	ptr->name = 'o';
 	ptr->size = a->size;
 	ptr->top = a->top;
-	ptr->list = malloc(sizeof(t_element *) * (a->size + 1));
+	ptr->list = malloc(sizeof(t_element *) * (a->size));
 	if (ptr->list == NULL)
 		return (NULL);
-	i = a->top;
-	while (i >= 0)
+	i = 0;
+	while (i < a->size)
 	{
 		ptr->list[i] = malloc(sizeof(t_element));
 		if (ptr->list[i] == NULL)
 			return (NULL);
 		ptr->list[i]->val = a->list[i]->val;
-		ptr->list[i]->base_3 = ft_strdup(a->list[i]->base_3);
+		if (a->list[i]->base_3 != NULL)
+			ptr->list[i]->base_3 = ft_strdup(a->list[i]->base_3);
 		ptr->list[i]->idx = a->list[i]->idx;
-		i--;
+		i++;
 	}
 	return (ptr);
-}
-
-void	reset_node(t_element *node)
-{
-	node->idx = -1;
-	node->base_3 = 0;
-	node->val = 0;
 }

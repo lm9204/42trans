@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_fnc.c                                    :+:      :+:    :+:   */
+/*   checker_fnc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeondcho <yeondcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 10:46:08 by yeondcho          #+#    #+#             */
-/*   Updated: 2024/01/25 17:41:48 by yeondcho         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:58:12 by yeondcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "checker.h"
 
-void	s(t_stack *s, int isprint)
+void	s(t_stack *s)
 {
-	t_element	*tmp;
+	int	tmp;
 
 	if (s->top <= 0)
 		return ;
 	tmp = s->list[s->top];
 	s->list[s->top] = s->list[s->top - 1];
 	s->list[s->top - 1] = tmp;
-	if (isprint)
-		print_cmd(s->name, "s");
 	return ;
 }
 
-void	p(t_stack *from, t_stack *to, int isprint)
+void	p(t_stack *from, t_stack *to)
 {
-	t_element	*tmp;
+	int	tmp;
 
 	if (from->top == -1)
 		return ;
@@ -37,15 +35,13 @@ void	p(t_stack *from, t_stack *to, int isprint)
 	from->top--;
 	to->top++;
 	to->list[to->top] = tmp;
-	if (isprint)
-		print_cmd(to->name, "p");
 	return ;
 }
 
-void	r(t_stack *s, int isprint)
+void	r(t_stack *s)
 {
-	t_element	*tmp;
-	int			i;
+	int	tmp;
+	int	i;
 
 	if (s->top <= 0)
 		return ;
@@ -57,15 +53,13 @@ void	r(t_stack *s, int isprint)
 		i--;
 	}
 	s->list[i] = tmp;
-	if (isprint)
-		print_cmd(s->name, "r");
 	return ;
 }
 
-void	rr(t_stack *s, int isprint)
+void	rr(t_stack *s)
 {
-	t_element	*tmp;
-	int			i;
+	int	tmp;
+	int	i;
 
 	if (s->top <= 0)
 		return ;
@@ -77,17 +71,18 @@ void	rr(t_stack *s, int isprint)
 		i++;
 	}
 	s->list[i] = tmp;
-	if (isprint)
-		print_cmd(s->name, "rr");
 	return ;
 }
 
-void	print_cmd(char name, char *cmd_name)
+void	free_str(char **str)
 {
-	write(1, cmd_name, ft_strlen(cmd_name));
-	if (name == 'o')
-		write(1, "a", 1);
-	else
-		write(1, &name, 1);
-	write(1, "\n", 1);
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
